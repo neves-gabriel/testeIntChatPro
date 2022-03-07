@@ -42,8 +42,29 @@ app.post("/test", async (req, res) => {
       .insertOne({ test: "pai ta on!" });
     res.send(response);
   } catch (error) {
-    console.log(error);
-    res.sendStatus(500);
+    console.error(error);
+    res.status(500).send(error);
+  }
+});
+
+//NOTIFICATION
+app.post("/notifications", async (req, res) => {
+  const { resource, user_id, topic, application_id, attempts, sent, received } =
+    req.body;
+  try {
+    await db.collection("notifications").insertOne({
+      resource,
+      user_id,
+      topic,
+      application_id,
+      attempts,
+      sent,
+      received,
+    });
+    res.sendStatus(200);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error);
   }
 });
 
